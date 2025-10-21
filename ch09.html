@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <title>課程問卷調查</title>
+</head>
+<body>
+    <nav>
+        <a href="ch04.html">首頁</a> |
+        <a href="ch09.html">課程問卷</a> |
+        <a href="#">其他連結</a>
+    </nav>
+    <header>
+        <h2>課程問卷調查</h2>
+    </header>
+    <main>
+        <form>
+            <fieldset>
+                <legend>您的名字、密碼</legend>
+                <label for="name">您的名字：</label>
+                <input type="text" id="name" name="name" value="辛信興" size="40"><br>
+                <label for="pwd">密碼：</label>
+                <input type="password" id="pwd" name="pwd" value="學號">
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>請選擇課程</legend>
+                <select id="course" name="course[]" multiple size="2">
+                    <option>資料結構</option>
+                    <option selected>物件導向程式設計</option>
+                </select>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>難易度</legend>
+                <input type="radio" id="easy" name="level" value="簡單">
+                <label for="easy">簡單</label>
+                <input type="radio" id="hard" name="level" value="困難">
+                <label for="hard">困難</label>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>您最不喜歡的課程包含</legend>
+                <input type="checkbox" id="web" name="dislike[]" value="網頁程式設計">
+                <label for="web">網頁程式設計</label>
+                <input type="checkbox" id="ds" name="dislike[]" value="資料結構">
+                <label for="ds">資料結構</label>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>您希望可以增加那些課程</legend>
+                <input type="checkbox" id="trans" name="add[]" value="轉劇">
+                <label for="trans">轉劇</label>
+                <input type="checkbox" id="game" name="add[]" value="電競">
+                <label for="game">電競</label>
+                <input type="checkbox" id="movie" name="add[]" value="電影欣賞">
+                <label for="movie">電影欣賞</label>
+                <input type="checkbox" id="food" name="add[]" value="美食">
+                <label for="food">美食</label>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>您對這門課的評語</legend>
+                <textarea id="comment" name="comment" rows="3" cols="8">我身後的陶斯</textarea>
+            </fieldset>
+            <br>
+            <button type="submit">送出資料</button>
+            <button type="reset" accesskey="m">清除重填</button>
+        </form>
+    </main>
+    <footer>
+        &copy; 2025 國立臺東大學資訊管理學系
+    </footer>
+</body>
+</html>
