@@ -1,0 +1,52 @@
+<head>
+    <meta charset="utf-8">
+    <title>Programming JS_Ch05 Homework</title> 
+</head>
+<body>
+    <header>
+        <h1>Web Programming JS_Ch05 Homework</h1>
+    </header>
+    <nav>
+        <a href="https://github.com/Liyue-Wei">Liyue-Wei on GitHub</a>
+    </nav>
+    <main>
+        <script>
+            var str = window.prompt("输入文字", "台东");
+            
+            document.writeln("<h2>你输入的文字是：" + str + "</h2>");
+            document.writeln("<hr>");
+            
+            // 判断是否包含"台东"
+            if (str.includes("台东")) {
+                var index = str.indexOf("台东");
+                
+                document.writeln("原始字串：" + "我爱台东大学资管系".fontcolor("blue").bold() + "<br>");
+                document.writeln("字串包含「台东」<br>");
+                
+                // 台东之前的字串
+                var before = str.substring(0, index);
+                document.writeln("台东之前的字串是：" + before.fontcolor("red").bold() + "<br>");
+                
+                // 台东之后的字串
+                var after = str.substring(index + 2);  // "台东"长度是2
+                document.writeln("台东之后的字串是：" + after.fontcolor("green").bold() + "<br>");
+                
+                // 显示索引位置
+                document.writeln("台东出现在字串的索引位置：" + index + "<br>");
+            }
+            // 判断是否包含"太麻里"
+            else if (str.includes("太麻里")) {
+                document.writeln("原始字串：" + "我爱台东大学资管系".fontcolor("blue").bold() + "<br>");
+                document.writeln("字串不包含「太麻里」<br>");
+            }
+            // 都不包含
+            else {
+                document.writeln("原始字串：" + "我爱台东大学资管系".fontcolor("blue").bold() + "<br>");
+                document.writeln("字串不包含「台东」也不包含「太麻里」<br>");
+            }
+        </script>
+    </main>
+    <footer>
+        &copy; 2025 Zhang Zhewei copyright not reserved (XD
+    </footer>
+</body>
