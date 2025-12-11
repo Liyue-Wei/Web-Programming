@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>酷炫登录 - 示例</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #120a8f;
+      --bg2: #0f7a9a;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.07);
+      --accent: #20c997;
+      --accent-deep: #16a085;
+      --danger: #ff4757;
+      --text: #e9eef5;
+      --muted: rgba(233,238,245,0.8);
+    }
+    * { box-sizing: border-box; }
+    html,body { height: 100%; margin: 0; font-family: 'Poppins', 'Noto Sans SC', sans-serif; color: var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    /* Animated gradient background with floating blobs */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg, var(--bg1) 0%, #30336b 35%, var(--bg2) 100%);
+      height: 100%;
+      overflow: hidden;
+    }
+    .bg-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(36px);
+      opacity: 0.8;
+      animation: float 8s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .blob.b1 { width: 380px; height: 380px; background: #ff6b6b; left: -120px; top: -60px; animation-duration: 10s; }
+    .blob.b2 { width: 420px; height: 420px; background: #ffd166; left: 60%; top: -100px; animation-duration: 12s; }
+    .blob.b3 { width: 420px; height: 420px; background: #6bffb2; right: -120px; bottom: -140px; animation-duration: 9s; }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    /* Center container */
+    .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 24px;
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Left hero */
+    .hero {
+      width: 46%;
+      min-width: 320px;
+      color: var(--text);
+      padding: 36px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      box-shadow: 0 10px 30px rgba(9,9,12,0.5);
+      transform: translateZ(0);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo .avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display: flex; align-items:center; justify-content:center; font-weight:700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo h1 { font-size: 36px; margin: 0; letter-spacing: -1px; font-weight:700; color: var(--text); }
+    .hero p { margin-top: 18px; color: var(--muted); line-height: 1.5; font-size: 16px; }
+
+    /* Card / form */
+    .card {
+      width: 420px;
+      min-width: 280px;
+      padding: 28px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 10px 30px rgba(7,8,12,0.6);
+      backdrop-filter: blur(8px);
+      position: relative;
+    }
+    .card h2 { margin: 0 0 16px; font-size: 22px; color: var(--text); }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.15);
+      transition: all 160ms ease;
+    }
+    .input-group.focused {
+      border-color: rgba(255,255,255,0.12);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 0 3px rgba(32,201,151,0.06);
+      transform: translateY(-1px);
+    }
+    .input-group svg { width: 20px; height: 20px; opacity: 0.9; fill: var(--muted); }
+    .input-group input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      outline: none;
+      font-size: 15px;
+      padding: 6px 0;
+    }
+    .input-group .toggle-btn {
+      cursor: pointer;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.03);
+      padding: 6px;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+    .actions .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+      box-shadow: 0 8px 24px rgba(22,160,133,0.18);
+    }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: translateY(-1px); }
+
+    /* Info and error */
+    .msg {
+      height: 28px;
+      font-size: 14px;
+      margin-top: 6px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .msg.success { color: #7ef1b0; }
+    .msg.fail { color: var(--danger); }
+
+    /* Small helper */
+    .note {
+      display: block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(233,238,245,0.6);
+    }
+
+    /* Shake animation on error */
+    @keyframes shake {
+      10%, 90% { transform: translateX(-1px); }
+      20%, 80% { transform: translateX(2px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+    .shake { animation: shake 420ms ease; }
+
+    /* Success check */
+    .success-flag {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #a1f0b0, #7ef1b0);
+      color: #03311a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* responsiveness */
+    @media (max-width: 920px) {
+      .wrap { flex-direction: column; gap: 18px; align-items: center; }
+      .hero { width: 90%; min-width: 280px; }
+      .card { width: 92%; max-width: 520px; }
+      .blob { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <div class="wrap">
+    <!-- Left hero info -->
+    <div class="hero" aria-hidden="true">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="avatar" style="font-size:22px; font-weight:700;">星</div>
+        <div style="line-height:1;">
+          <h1 style="margin:0;color:var(--text);font-size:28px;">欢迎回到 小星</h1>
+          <div class="muted">一个酷炫的登录界面示例，演示前端验证与动画效果。</div>
+        </div>
+      </div>
+
+      <p class="muted">
+        预设账号：<b>xinxinxing</b> ； 预设密码：<b>geinimanmandexinxinxin</b>（仅示例用途，请勿在生产环境中使用明文密码）
+      </p>
+      <p class="muted" style="margin-top:20px;">
+        Demo 功能：验证、动画、记住用户名、密码可见切换、失败抖动与成功提示。
+      </p>
+    </div>
+
+    <!-- Right card with form -->
+    <div class="card" role="dialog" aria-labelledby="login-heading" aria-modal="true">
+      <h2 id="login-heading">登录你的账户</h2>
+      <form id="loginForm" novalidate>
+        <div class="input-group" id="usernameGroup">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.3 12 2.3 7.1 4.5 7.1 7.1 9.3 12 12 12zm0 2.1c-3.4 0-10.2 1.7-10.2 5v2.1H22.2V19c0-3.3-6.8-4.9-10.2-4.9z"/></svg>
+          <input id="username" name="username" type="text" placeholder="账号" aria-label="账号" autocomplete="username" />
+        </div>
+
+        <div class="input-group" id="passwordGroup">
+          <svg viewBox="0 0 24 24"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-9h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM9 6a3 3 0 0 1 6 0v2H9V6z"/></svg>
+          <input id="password" name="password" type="password" placeholder="密码" aria-label="密码" autocomplete="current-password" />
+          <div class="toggle-btn" id="togglePassword" title="显示/隐藏密码">
+            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zM12 9.5a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 12 9.5z"/></svg>
+          </div>
+        </div>
+
+        <div class="actions">
+          <label class="remember">
+            <input id="remember" type="checkbox" aria-label="记住我" />
+            <span class="muted">记住用户名</span>
+          </label>
+          <button type="submit" class="btn" id="loginBtn">登录</button>
+        </div>
+
+        <div class="msg" id="messageArea" aria-live="polite"></div>
+
+        <span class="note">忘记密码？请联系管理员。</span>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 预设凭证
+    const PRESET = {
+      username: "xinxinxing",
+      password: "geinimanmandexinxinxin"
+    };
+
+    const usernameEl = document.getElementById('username');
+    const passwordEl = document.getElementById('password');
+    const form = document.getElementById('loginForm');
+    const message = document.getElementById('messageArea');
+    const loginBtn = document.getElementById('loginBtn');
+    const toggleBtn = document.getElementById('togglePassword');
+    const rememberBox = document.getElementById('remember');
+    const usernameGroup = document.getElementById('usernameGroup');
+    const passwordGroup = document.getElementById('passwordGroup');
+
+    // 初始化：如果用户在 localStorage 中记住过用户名
+    document.addEventListener('DOMContentLoaded', () => {
+      const remembered = localStorage.getItem('rememberedUsername');
+      if (remembered) {
+        usernameEl.value = remembered;
+        rememberBox.checked = true;
+      }
+    });
+
+    // focus effect
+    function toggleFocus(el, group) {
+      if (el === document.activeElement) group.classList.add('focused');
+      else group.classList.remove('focused');
+    }
+    usernameEl.addEventListener('focus', () => toggleFocus(usernameEl, usernameGroup));
+    usernameEl.addEventListener('blur', () => toggleFocus(usernameEl, usernameGroup));
+    passwordEl.addEventListener('focus', () => toggleFocus(passwordEl, passwordGroup));
+    passwordEl.addEventListener('blur', () => toggleFocus(passwordEl, passwordGroup));
+
+    // toggle password visibility
+    toggleBtn.addEventListener('click', () => {
+      passwordEl.type = passwordEl.type === 'password' ? 'text' : 'password';
+      toggleBtn.style.opacity = passwordEl.type === 'password' ? 0.95 : 0.8;
+    });
+
+    // show message helper
+    function showMessage(text, type = 'info') {
+      message.textContent = text;
+      message.classList.remove('success', 'fail');
+      if (type === 'success') message.classList.add('success');
+      if (type === 'fail') message.classList.add('fail');
+    }
+
+    // form submission
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = usernameEl.value.trim();
+      const p = passwordEl.value;
+
+      // basic presence check
+      if (!u || !p) {
+        showMessage('请输入用户名和密码。', 'fail');
+        animateFailure();
+        return;
+      }
+
+      // check preset credentials
+      if (u === PRESET.username && p === PRESET.password) {
+        showMessage('登录成功，欢迎回来！', 'success');
+        // 短暂动画然后禁用表单（可改为跳转）
+        loginBtn.disabled = true;
+        loginBtn.textContent = '已登录';
+        if (rememberBox.checked) {
+          localStorage.setItem('rememberedUsername', u);
+        } else {
+          localStorage.removeItem('rememberedUsername');
+        }
+        // show a success flag
+        const flag = document.createElement('span');
+        flag.className = 'success-flag';
+        flag.innerText = 'OK';
+        message.textContent = '';
+        message.appendChild(flag);
+        const msg = document.createElement('span');
+        msg.style.marginLeft = '10px';
+        msg.innerText = '欢迎回来，' + u + '！';
+        message.appendChild(msg);
+        // disable inputs (simulated)
+        usernameEl.disabled = true;
+        passwordEl.disabled = true;
+        rememberBox.disabled = true;
+        // optionally you can redirect here:
+        // setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+      } else {
+        showMessage('账号或密码错误，请重试。', 'fail');
+        animateFailure();
+      }
+    });
+
+    // fail animation for card
+    function animateFailure() {
+      const card = document.querySelector('.card');
+      card.classList.remove('shake');
+      void card.offsetWidth; // force reflow
+      card.classList.add('shake');
+      // subtle border flash
+      card.style.borderColor = 'rgba(255,255,255,0.12)';
+      setTimeout(() => {
+        card.style.borderColor = 'rgba(255,255,255,0.06)';
+      }, 500);
+    }
+  </script>
+</body>
+</html>
